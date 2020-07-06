@@ -1,0 +1,15 @@
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\bin\Debug\YellowPagesZipCodeScraper.exe.config
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\bin\Debug\YellowPagesZipCodeScraper.exe
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\bin\Debug\YellowPagesZipCodeScraper.pdb
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\obj\Debug\YellowPagesZipCodeScraper.csprojAssemblyReference.cache
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\obj\Debug\YellowPagesZipCodeScraper.csproj.CoreCompileInputs.cache
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\obj\Debug\YellowPagesZipCodeScraper.exe
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\obj\Debug\YellowPagesZipCodeScraper.pdb
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\bin\Debug\AngleSharp.dll
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\bin\Debug\Newtonsoft.Json.dll
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\bin\Debug\System.Text.Encoding.CodePages.dll
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\bin\Debug\AngleSharp.xml
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\bin\Debug\Newtonsoft.Json.xml
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\dkrause\source\repos\YellowPagesZipCodeScraper\YellowPagesZipCodeScraper\obj\Debug\YellowPagesZipCodeScraper.csproj.CopyComplete
