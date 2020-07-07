@@ -129,8 +129,8 @@ namespace YellowPagesZipCodeScraper
                         saveAsType("csv");
                         break;
                     default:
-                        Console.WriteLine("Invalid Response. Please select either A or B and press 'Enter'.");
-                        Console.Read();
+                        Console.WriteLine("Invalid Response.");
+                        saveToFile();
                         break;
                 }
             }
