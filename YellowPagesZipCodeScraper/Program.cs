@@ -4,6 +4,7 @@ using AngleSharp.Html.Parser;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -27,6 +28,23 @@ namespace YellowPagesZipCodeScraper
             bool _continue = true;
             string url;
             IHtmlDocument document;
+
+            while (_continue)
+            {
+                getURL();
+                getHtmlDocument();
+                parseResults();
+                processPagination();
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Would you like to save the results to file? (Y/N)?");
+            if (Console.ReadLine().ToLower() == "y" || Console.ReadLine().ToLower() == "yes")
+            {
+                saveToFile();
+            }
+            Console.WriteLine("Press 'Enter' to end.");
+            Console.Read();
 
             void getURL()
             {
@@ -62,24 +80,7 @@ namespace YellowPagesZipCodeScraper
                     };
 
                     businessResults.Add(business);
-
-                    if (pageNumber <= 5)
-                    {
-                        Console.WriteLine("Name: " + $"{business.Name}");
-                        Console.WriteLine("Phone: " + $"{business.Phone}");
-                        Console.WriteLine("Street: " + $"{business.StreetAddress}");
-                        Console.WriteLine("City: " + $"{business.CityStateZip}");
-                        Console.WriteLine("Description: " + $"{business.Description}");
-                        Console.WriteLine("Website: " + $"{business.Website}");
-                        Console.WriteLine();
-                        Console.WriteLine("=======================================");
-                        Console.WriteLine();
-                    };
-                }
-
-                if (pageNumber > 5)
-                {
-                    Console.WriteLine("More results added to file, but not displayed here...");
+                    writeResultToConsole(business);
                 }
             }
 
@@ -111,22 +112,41 @@ namespace YellowPagesZipCodeScraper
                 }
             }
 
-            while (_continue)
+            void saveToFile()
             {
-                getURL();
-                getHtmlDocument();
-                parseResults();
-                processPagination();
+                Console.WriteLine();
+                Console.WriteLine("Choose how you'd like to save your file... Type A or B and press 'Enter'.");
+                Console.WriteLine("A - .json");
+                Console.WriteLine("B - .csv");
+                char selection = Console.ReadLine().ToLower()[0];
+
+                switch (selection)
+                {
+                    case 'a':
+                        saveAsType("json");
+                        break;
+                    case 'b':
+                        saveAsType("csv");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Response. Please select either A or B and press 'Enter'.");
+                        Console.Read();
+                        break;
+                }
             }
 
-            void saveToFile()
+            void saveAsType(string fileType)
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 string selectedPath = "";
                 Thread t = new Thread((ThreadStart)(() =>
                 {
-                    saveFileDialog.Filter = "JSON Files (*.json)|*.json";
-                    saveFileDialog.Title = "Save Results to JSON";
+                    saveFileDialog.Filter = "CSV file(*.csv) | *.csv";
+                    saveFileDialog.Title = "Save Results to " + fileType;
+                    if (fileType == "json")
+                    {
+                        saveFileDialog.Filter = "JSON Files (*.json)|*.json";
+                    }
 
                     if (saveFileDialog.ShowDialog() == DialogResult.OK)
                     {
@@ -135,8 +155,18 @@ namespace YellowPagesZipCodeScraper
 
                     if (selectedPath != "")
                     {
-                        string jsonResults = JsonConvert.SerializeObject(businessResults);
-                        System.IO.File.WriteAllText(selectedPath, jsonResults);
+                        if (fileType == "json")
+                        {
+                            string jsonResults = JsonConvert.SerializeObject(businessResults);
+                            File.WriteAllText(selectedPath, jsonResults);
+                        }
+
+                        if (fileType == "csv")
+                        {
+                            string csvResults = GenerateCSVReport(businessResults);
+                            File.WriteAllText(selectedPath, csvResults);
+                        }
+
                     }
                 }));
 
@@ -147,13 +177,45 @@ namespace YellowPagesZipCodeScraper
                 Console.WriteLine("File saved to " + $"{selectedPath}");
             }
 
-            Console.WriteLine("Would you like to save the results to file? (Y/N)?");
-            if (Console.ReadLine().ToLower() == "y" || Console.ReadLine().ToLower() == "yes")
+            void writeResultToConsole(BusinessEntry business)
             {
-                saveToFile();
+                Console.WriteLine("Name: " + $"{business.Name}");
+                Console.WriteLine("Phone: " + $"{business.Phone}");
+                Console.WriteLine("Street: " + $"{business.StreetAddress}");
+                Console.WriteLine("City: " + $"{business.CityStateZip}");
+                Console.WriteLine("Description: " + $"{business.Description}");
+                Console.WriteLine("Website: " + $"{business.Website}");
+                Console.WriteLine();
+                Console.WriteLine("=======================================");
+                Console.WriteLine();
             }
-            Console.WriteLine("Press 'Enter' to end.");
-            Console.Read();
+        }
+        public static string GenerateCSVReport(List<BusinessEntry> items)
+        {
+            var output = "";
+            var delimiter = ",";
+            var properties = typeof(BusinessEntry).GetProperties()
+             .Where(n => n.PropertyType == typeof(string));
+
+            using (var sw = new StringWriter())
+            {
+                var header = properties
+                    .Select(n => n.Name)
+                    .Aggregate((a, b) => a + delimiter + b);
+
+                sw.WriteLine(header);
+
+                foreach (var item in items)
+                {
+                    var row = properties
+                    .Select(n => n.GetValue(item, null))
+                    .Select(n => n == null ? "null" : n.ToString())
+                    .Aggregate((a, b) => a + delimiter + b);
+                    sw.WriteLine(row);
+                }
+                output = sw.ToString();
+            }
+            return output;
         }
     }
 
